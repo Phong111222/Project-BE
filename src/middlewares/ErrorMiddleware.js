@@ -2,7 +2,7 @@ import ErrorResponse from '../models/response/ErrorResponse';
 
 export default (err, _, res, next) => {
   let errors = { ...err };
-  console.log(err);
+
   if (!err.code && err.message) {
     errors = new ErrorResponse(500, err.message);
   }

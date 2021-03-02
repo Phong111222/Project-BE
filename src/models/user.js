@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 const UserSchema = new mongoose.Schema(
@@ -24,6 +24,18 @@ const UserSchema = new mongoose.Schema(
         },
       },
     },
+    like: {
+      type: [Schema.Types.ObjectId],
+      ref: 'like',
+    },
+    comment: {
+      type: [Schema.Types.ObjectId],
+      ref: 'comment',
+    },
+    post: {
+      type: [Schema.Types.ObjectId],
+      ref: 'post',
+    },
     isActive: {
       default: true,
       type: Boolean,
@@ -36,7 +48,7 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.pre('save', async function (next) {
   const salt = await bcrypt.genSalt();
-  const hashPass = bcrypt.hash(this.password, salt);
+  const hashPass = await bcrypt.hash(this.password, salt);
   this.password = hashPass;
   next();
 });
